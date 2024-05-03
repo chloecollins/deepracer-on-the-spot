@@ -28,6 +28,12 @@ fi
 subnetsConfig=''
 
 vpc=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[*].VpcId' --output text)
+vpcIPv6=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[*].Ipv6CidrBlockAssociationSet[*].CidrBlock' --output text)
+
+if [ -z "$vpcIPv6" ]; then
+	aws ec2 associate-vpc-cidr-block --amazon-provided-ipv6-cidr-block --vpc-id $vpc
+fi
+
 subnetCount=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=$vpc --query 'Subnets[*].SubnetId' | grep subnet | wc -l)
 index=0
 while [[ $index -lt $subnetCount ]];do

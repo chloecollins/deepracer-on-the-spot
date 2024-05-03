@@ -82,7 +82,7 @@ Resources:
                         Fn::ImportValue:
                             !Sub "${ResourcesStackName}-InterruptionNotification"
             /etc/profile.d/my_public_ip.sh:
-              content: "export PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)"
+              content: "export PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/ipv6)"
               mode : "000755"
               owner: root
               group: root
@@ -464,7 +464,7 @@ Resources:
                   TOKEN=$(docker logs deepracer-analysis 2>&1 | grep -o -E "token=[0-9a-f]+" | head -n 1)
                 done
 
-                PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+                PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/ipv6)"
 
                 JUPYTER_URL=http://$PUBLIC_IP:8888/?$TOKEN
 
